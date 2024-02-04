@@ -1,0 +1,354 @@
+//Yunus Emre Gezici 150121066
+//This program takes an integer array and converts the numbers to binary and prints in a 2D array. 
+//This array have 1s and 0s. We will turn them to 0 or 1 according to the some rules. 
+//These rules are if a digit is 0 the program looks their neighbor blocks if the sum of them equals 3 after this step
+//this digit will be 1 but if it is not equal 3, digit will be 0.
+//The second rule is if a digit is 1, if the sum of the neighbor blocks are equal 2 or 3, the digit will 1 again
+//but if it is not equals 2 or 3 the digit will be 0.
+
+import java.util.Scanner;
+
+public class Pro5_150121066 {
+
+	public static void main(String[] args) {
+		Scanner input = new Scanner(System.in);
+		System.out.println("Welcome to our program. ");
+		System.out.print("Enter a string: ");
+		String s = input.nextLine();
+		int[] array = separate(s);
+		int f = findingMax(array);
+		boolean g = true;
+		int counter = 0;
+		// This while method checks if is there a number that does not fit in the array.
+		while (g) {
+			if (f >= 2) {
+				f /= 2;
+				counter++;
+			} else
+				g = false;
+		}
+		int steps = 0;
+
+		
+		boolean x ;
+		if(array.length<counter)
+			x = false;
+		else
+			x = true;
+		if (x) {
+			System.out.print("Enter a number of steps: ");
+			steps = input.nextInt();
+		}
+		boolean k = true;
+		while (k) {
+			if (array.length < counter) {
+				System.out.println("The number " + findingMax(array) + " cannot be represented with " + array.length
+						+ "x" + array.length + " array!");
+				//Normally, using nextInt after nextLine program gives me error but it stop and I do not understand why
+				System.out.print("Enter a string: ");
+				s = input.nextLine();
+				System.out.print("Enter a number of steps: ");
+				steps = input.nextInt();
+				array = separate(s);
+				f = findingMax(array);
+			} else {
+
+				int[][] array1 = to2DArray(array);
+				int[][] array2 = array1;
+				String decimalValues = "";
+				printingSteps(array1);
+				int count = 1;
+				for (int i = 0; i < steps; i++) {
+					array2 = steps(array2);
+					System.out.println("It is converted to the following table after " + count + "." + " step: ");
+					printingSteps(array2);
+					count++;
+				}
+				for (int a : decimalValue(array2))
+					decimalValues += a + "-";
+				decimalValues = decimalValues.substring(0, decimalValues.length() - 1);
+				System.out
+						.println("The decimal value for the second table after " + steps + " steps: " + decimalValues);
+				k = false;
+			}
+		}
+	}
+
+	// This method converts the taken string to integer array
+	public static int[] separate(String str) {
+		str += "-";
+		int eleman = 0;
+		int arraySize = 0;
+		for (int i = 0; i < str.length(); i++) {
+			if (str.charAt(i) == '-')
+				arraySize++;
+		}
+		int[] array = new int[arraySize];
+		int sP = 0;
+		for (int i = 0; i < str.length(); i++) {
+			if (str.charAt(i) == '-') {
+				String a = str.substring(sP, i);
+				array[eleman] = Integer.parseInt(a);
+				eleman++;
+				sP = i + 1;
+			}
+		}
+		return array;
+	}
+
+	// This method converts decimal numbers to binary numbers
+	public static int[] convertDectoB(int number, int size) {
+		int binaryArray[] = new int[size];
+		int eleman = size - 1;
+		while (number > 0) {
+			int carry = number % 2;
+			binaryArray[eleman] = carry;
+			number /= 2;
+			eleman--;
+		}
+		return binaryArray;
+	}
+
+	// This method converts the decimal array to 2D binary array
+	public static int[][] to2DArray(int[] array) {
+		int[][] array1 = new int[array.length][array.length];
+		for (int i = 0; i < array.length; i++) {
+			array1[i] = convertDectoB(array[i], array.length);
+
+		}
+		return array1;
+	}
+
+	// This method makes the steps
+	public static int[][] steps(int[][] array) {
+		int total;
+		int[][] array1 = new int[array.length][array.length];
+		// 0,0
+		if (array[0][0] == 1) {
+			total = array[0][1] + array[1][0] + array[1][1];
+			if (total == 2 || total == 3) {
+				array1[0][0] = 1;
+			} else {
+				array1[0][0] = 0;
+			}
+			total = 0;
+		} else {
+			total = array[0][1] + array[1][0] + array[1][1];
+			if (total == 3) {
+				array1[0][0] = 1;
+			} else {
+				array1[0][0] = 0;
+			}
+			total = 0;
+		} // left down
+		if (array[array.length - 1][0] == 1) {
+			total = array[array.length - 2][1] + array[array.length - 2][0] + array[array.length - 1][1];
+			if (total == 2 || total == 3) {
+				array1[array.length - 1][0] = 1;
+			} else {
+				array1[array.length - 1][0] = 0;
+			}
+			total = 0;
+		} else {
+			total = array[array.length - 2][1] + array[array.length - 2][0] + array[array.length - 1][1];
+			if (total == 3) {
+				array1[array.length - 1][0] = 1;
+			} else {
+				array1[array.length - 1][0] = 0;
+			}
+			total = 0;
+		} // right up
+		if (array[0][array.length - 1] == 1) {
+			total = array[0][array.length - 2] + array[1][array.length - 1] + array[1][array.length - 2];
+			if (total == 2 || total == 3) {
+				array1[0][array.length - 1] = 1;
+			} else {
+				array1[0][array.length - 1] = 0;
+			}
+			total = 0;
+		} else {
+			total = array[0][array.length - 2] + array[1][array.length - 1] + array[1][array.length - 2];
+			if (total == 3) {
+				array1[0][array.length - 1] = 1;
+			} else {
+				array1[0][array.length - 1] = 0;
+			}
+			total = 0;
+		} // right down
+		if (array[array.length - 1][array.length - 1] == 1) {
+			total = array[array.length - 2][array.length - 1] + array[array.length - 2][array.length - 2]
+					+ array[array.length - 1][array.length - 2];
+			if (total == 2 || total == 3) {
+				array1[array.length - 1][array.length - 1] = 1;
+			} else {
+				array1[array.length - 1][array.length - 1] = 0;
+			}
+			total = 0;
+		} else {
+			total = array[array.length - 2][array.length - 1] + array[array.length - 2][array.length - 2]
+					+ array[array.length - 1][array.length - 2];
+			if (total == 3) {
+				array1[array.length - 1][array.length - 1] = 1;
+			} else {
+				array1[array.length - 1][array.length - 1] = 0;
+			}
+			total = 0;
+		}
+
+		for (int x = 0; x < array.length; x++) {
+			for (int y = 0; y < array.length; y++) {
+				total = 0;
+				// left column
+				if (y == 0) {
+					if (!(x == 0 || x == array.length - 1)) {
+						total = array[x + 1][y] + array[x - 1][y] + array[x + 1][y + 1] + array[x - 1][y + 1]
+								+ array[x][y + 1];
+						if (array[x][y] == 1) {
+							if (total == 2 || total == 3) {
+								array1[x][y] = 1;
+							} else {
+								array1[x][y] = 0;
+							}
+						} else {
+							if (total == 3) {
+								array1[x][y] = 1;
+							} else {
+								array1[x][y] = 0;
+							}
+						}
+					}
+
+				}
+				// upper row
+				if (x == 0) {
+					if (!(y == 0 || y == array.length - 1)) {
+						total = array[x][y - 1] + array[x][y + 1] + array[x + 1][y - 1] + array[x + 1][y]
+								+ array[x + 1][y + 1];
+						if (array[x][y] == 1) {
+							if (total == 2 || total == 3) {
+								array1[x][y] = 1;
+							} else {
+								array1[x][y] = 0;
+							}
+						} else {
+							if (total == 3) {
+								array1[x][y] = 1;
+							} else {
+								array1[x][y] = 0;
+							}
+						}
+					}
+				}
+				// lower row
+				if (x == array.length - 1) {
+					if (!(y == 0 || y == array.length - 1)) {
+						total = array[x][y - 1] + array[x][y + 1] + array[x - 1][y - 1] + array[x - 1][y]
+								+ array[x - 1][y + 1];
+						if (array[x][y] == 1) {
+							if (total == 2 || total == 3) {
+								array1[x][y] = 1;
+							} else {
+								array1[x][y] = 0;
+							}
+						} else {
+							if (total == 3) {
+								array1[x][y] = 1;
+							} else {
+								array1[x][y] = 0;
+							}
+						}
+					}
+				}
+				// right column
+				if (y == array.length - 1) {
+					if (!(x == 0 || x == array.length - 1)) {
+						total = array[x - 1][y] + array[x + 1][y] + array[x - 1][y - 1] + array[x][y - 1]
+								+ array[x + 1][y - 1];
+						if (array[x][y] == 1) {
+							if (total == 2 || total == 3) {
+								array1[x][y] = 1;
+							} else {
+								array1[x][y] = 0;
+							}
+						} else {
+							if (total == 3) {
+								array1[x][y] = 1;
+							} else {
+								array1[x][y] = 0;
+							}
+						}
+					}
+				}
+				// mid
+				if (!(x == 0 || x == array.length - 1 || y == 0 || y == array.length - 1)) {
+					total = array[x - 1][y - 1] + array[x - 1][y] + array[x - 1][y + 1] + array[x][y - 1]
+							+ array[x][y + 1] + array[x + 1][y - 1] + array[x + 1][y] + array[x + 1][y + 1];
+					if (array[x][y] == 1) {
+						if (total == 2 || total == 3) {
+							array1[x][y] = 1;
+						} else {
+							array1[x][y] = 0;
+						}
+					} else {
+						if (total == 3) {
+							array1[x][y] = 1;
+						} else {
+							array1[x][y] = 0;
+						}
+					}
+				}
+
+			}
+		}
+		return array1;
+	}
+
+	public static void printingSteps(int array[][]) {
+		for (int[] a : array) {
+			System.out.print("-");
+			for (int b = 0; b < array.length; b++) {
+				System.out.print("----");
+			}
+			System.out.println();
+			System.out.print("| ");
+
+			for (int b : a) {
+				System.out.print(b + " | ");
+			}
+			System.out.println();
+		}
+		System.out.print("-");
+		for (int b = 0; b < array.length; b++) {
+			System.out.print("----");
+		}
+		System.out.println();
+
+	}
+
+	// This method converts the binary numbers to decimal
+	public static int[] decimalValue(int array[][]) {
+		int[] decimalValues = new int[array.length];
+		for (int x = 0; x < array.length; x++) {
+			int total = 0;
+			int pow = 1;
+			for (int y = array.length - 1; y >= 0; y--) {
+				total += array[x][y] * pow;
+				pow *= 2;
+			}
+			decimalValues[x] = total;
+		}
+		return decimalValues;
+	}
+
+	// This method finds maximum number in the array to check is it fit in the
+	// binary array-
+	public static int findingMax(int[] array) {
+		int maxValue = array[0];
+		for (int i = 0; i < array.length; i++) {
+			if (array[i] > maxValue)
+				maxValue = array[i];
+		}
+		return maxValue;
+	}
+
+}
