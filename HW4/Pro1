@@ -1,0 +1,193 @@
+
+//Yunus Emre Gezici 
+//1501221066
+import java.util.Scanner;
+
+public class Hw4_150121066 {
+
+	public static void main(String[] args) {
+		int number = 0;
+		String sAll = "";
+
+		while (number != 5) {
+			Scanner input = new Scanner(System.in);
+			// This is menu
+			System.out.println("Menu: " + "\n" + "1. Change Case" + "\n" + "2. Count occurrences " + "\n"
+					+ "3. Encryption" + "\n" + "4. Statistics " + "\n" + "5. Exit");
+			System.out.print("Please select an option: ");
+			number = input.nextInt();
+			// The program takes empty input in order to prevent some errors.
+			input.nextLine();
+			// Change Case
+			if (number == 1) {
+				System.out.print("Please enter an input String: ");
+				String s = input.nextLine();
+				sAll += " " + s;
+				System.out.println(changeCase(s));
+			}
+			// Count occurrences
+			if (number == 2) {
+				System.out.print("Please  enter  an  input  sentence: ");
+				String s1 = input.nextLine();
+				System.out.print("Please enter an input word: ");
+				String s2 = input.nextLine();
+
+				int word = 1;
+				for (int i = 0; i < s1.length(); i++) {
+					if (s1.charAt(i) == ' ')
+						word++;
+				}
+				String[] array = new String[word];
+				int eleman = 0;
+				array[eleman] = "";
+				for (int i = 0; i < s1.length(); i++) {
+
+					if (s1.charAt(i) == ' ') {
+						eleman += 1;
+						array[eleman] = "";
+					} else {
+						array[eleman] += s1.charAt(i);
+					}
+
+				}
+				System.out.println(s2 + " appears " + countOccurences(array, s2) + " time(s) in the sentence.");
+				sAll += " " + s1;
+				sAll += " " + s2;
+			}
+			// Encryption
+			if (number == 3) {
+				System.out.print("Please enter an input String: ");
+				String str = input.nextLine();
+				System.out.print("Enter an integer pattern:");
+				int pattern = input.nextInt();
+				System.out.println("Source: " + str);
+				System.out.println("Encrypted: " + encryption(str, pattern));
+				sAll += " " + str;
+			}
+			// Statistics
+			if (number == 4) {
+				int a = updateWordCount(0, sAll);
+				int b = updateLetterCount(0, sAll);
+				printStat(a, b);
+
+			}
+			// Exit
+			if (number == 5) {
+				System.out.println("Program ends. Bye :)");
+			}
+
+		}
+
+	}
+
+	// This method changes character's case
+	public static String changeCase(String str) {
+		String str1 = "";
+		// This loop looks every character in the string
+		for (int i = 0; i < str.length(); i++) {
+			char c = str.charAt(i);
+			// This part changes character's case
+			if (Character.isUpperCase(c)) {
+				String asd = str.substring(i, i + 1);
+				String asd1 = asd.toLowerCase();
+				str1 += asd1;
+			} else if (Character.isLowerCase(c)) {
+				String asd = str.substring(i, i + 1);
+				String asd1 = asd.toUpperCase();
+				str1 += asd1;
+			} else {
+				String asd = str.substring(i, i + 1);
+				str1 += asd;
+			}
+		}
+
+		return str1;
+
+	}
+
+	// This method is used for finding same words
+	public static int countOccurences(String[] sentence, String word) {
+		int counter = 0;
+		for (String a : sentence) {
+			if (a.equalsIgnoreCase(word))
+				counter++;
+
+		}
+		return counter;
+	}
+
+	// This method encrypts a string with using given pattern
+	public static String encryption(String str, int pattern) {
+		String s1 = "";
+		// This boolean variable is for direction
+		boolean direction = true;
+		String[] array = new String[pattern];
+		String s2 = "";
+		for (int i = 0; i < str.length(); i++) {
+			if (str.charAt(i) == ' ') {
+			} else {
+				s1 += str.charAt(i);
+			}
+			s1 = s1.toUpperCase();
+		}
+		int a = 0;
+		for (int i = 0; i < s1.length(); i++) {
+			// In case of displaying null
+
+			if (array[a] == null)
+				array[a] = "";
+
+			array[a] += s1.substring(i, i + 1);
+			// This if else part for changing direction
+			if (direction) {
+				if (a == pattern - 1) {
+					direction = false;
+					a--;
+				} else {
+					a++;
+				}
+			} else {
+				if (a == 0) {
+					direction = true;
+					a++;
+				} else {
+					a--;
+				}
+			}
+		}
+		for (String b : array)
+			s2 += b;
+
+		return s2;
+	}
+
+	// This method returns number of letters of string
+	public static int updateLetterCount(int count, String str) {
+		int counter = 0;
+		for (int i = 0; i < str.length(); i++) {
+			char c = str.charAt(i);
+			if (Character.isLetter(c))
+				counter++;
+		}
+
+		return counter;
+	}
+
+	// This method returns number of words of string
+	public static int updateWordCount(int count, String str) {
+		int counter = 0;
+		for (int i = 0; i < str.length(); i++) {
+			if (str.charAt(i) == ' ')
+				if (Character.isLetter(str.charAt(i + 1)) || Character.isDigit(str.charAt(i + 1)))
+					counter++;
+		}
+		return counter;
+	}
+
+	// This void method prints total words and letters in the string
+	public static void printStat(int wordCount, int letterCount) {
+		System.out.println(
+				"The number of words: " + wordCount + "\n" + "The number of alphabetic letters: " + letterCount);
+	}
+
+}
