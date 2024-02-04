@@ -1,0 +1,53 @@
+//This program takes a sequence from user and displays "*" or " "
+//depending characters
+//Yunus Emre Gezici 150121066
+import java.util.Scanner;
+
+public class Pro1_150121066 {
+
+	public static void main(String[] args) {
+		Scanner input = new Scanner(System.in);
+		System.out.print("Welcome to image printer program. \nPlease enter your sequence: ");
+		String s = input.nextLine();
+		//If user doesn't write a digit to first character, this program will use this part
+		if (Character.isLetter(s.charAt(0))) {
+			if (s.charAt(0) == 's')
+				System.out.print("*");
+			if (s.charAt(0) == 'b')
+				System.out.print(" ");
+		} //This part is for looking every characters
+			for (int i = 1; i < s.length(); i++) {
+				char c = s.charAt(i);
+				char a = s.charAt(i - 1);
+                //If user writes b the program looks the previous character to learn
+				//how many times space will be printed
+				if (c == 'b') {
+					if (Character.isLetter(a)) {
+						System.out.print(" ");
+					} else {
+						int k = a - 48;
+						for (int b = 0; b < k; b++) {
+							System.out.print(" ");
+						}
+					}
+				}
+				//If user writes s the program looks the previous character to learn
+			    //how many times star will be printed
+				if (c == 's') {
+					if (Character.isLetter(a)) {
+						System.out.print("*");
+					} else {
+						int k = a - 48;
+						for (int b = 0; b < k; b++) {
+							System.out.print("*");
+						}
+					}
+				}//This part is for displaying new line
+				if (c == 'n') {
+					System.out.println();
+				}
+			}
+		
+	}
+
+}
