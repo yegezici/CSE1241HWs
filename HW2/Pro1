@@ -1,0 +1,103 @@
+//This program performs four basic mathematical operations: addition, subtraction,
+//multiplication, and division between the numbers in a given base.
+//Yunus Emre Gezici 150121066
+import java.util.Scanner;
+
+public class Hw2_150121066 {
+
+	public static void main(String[] args) {
+        //These are variables that help to convert a number at different base system to decimal 
+		// or decimal to a different base system 
+		int digit1 = 0;
+		int pow1 = 1;
+		int d1 = 0;
+		int digit2 = 0;
+		int pow2 = 1;
+		int d2 = 0;
+		int carry = 0;
+		String orgNumber = "";
+        
+		//We are taking data from the user at this part
+	   	Scanner input = new Scanner(System.in);
+	    System.out.print("Enter the base of the number system: ");
+		int base = input.nextInt();
+		System.out.print("Enter the type of the operation: ");
+		String op = input.next();
+		char ope = op.charAt(0);
+		
+		System.out.print("Enter the input numbers: ");
+		int n1 = input.nextInt();
+		int n2 = input.nextInt();
+    
+		//This part turns the number to decimal
+			while (n1 > 0) {
+				digit1 = n1 % 10;
+				n1 /= 10;
+				d1 += pow1 * digit1;
+				pow1 *= base;
+			}
+			while (n2 > 0) {
+				digit2 = n2 % 10;
+				n2 /= 10;
+				d2 += pow2 * digit2;
+				pow2 *= base;
+			}
+		//These are our operations
+		int total = d1 + d2;
+		int subs = d1 - d2;
+		int multi = d1 * d2;	
+		if(multi == 0 &&  ope == 'm')
+			System.out.println(0);
+		int div;
+		//This part was written for runtime error
+		//If user wanted to multiply a number with zero 
+		//the user would have some problems 
+		if(n2==0 && ope != 'd') {
+		    div = d2 / d1;
+		}else
+		    div = d1 / d2;
+         	
+		//This program uses switch case to separate operations easily
+		// and also convert the numbers to their base system from decimal
+		switch (ope) {
+		case 'a':
+			while (total > 0) {
+				carry = total % base;
+				orgNumber = carry + orgNumber;
+				total = total / base;
+
+			}
+			System.out.println("Output: " +orgNumber);
+			break;
+		case 's':
+			while (subs > 0) {
+				carry = subs % base;
+				orgNumber = carry + orgNumber;
+				subs = subs / base;
+
+			}
+			System.out.println("Output: " +orgNumber);
+			break;
+		case 'm':
+			while (multi > 0) {
+				carry = multi % base;
+				orgNumber = carry + orgNumber;
+				multi = multi / base;
+
+			}
+			System.out.println("Output: " +orgNumber);
+			break;
+		case 'd':
+			while (div > 0) {
+				carry = div % base;
+				orgNumber = carry + orgNumber;
+				div = div / base;
+
+			}
+			System.out.println("Output: " +orgNumber);
+			break;
+		default:
+			System.out.println("Please enter the first letter of operation with lowercase");
+		}
+	}
+}
