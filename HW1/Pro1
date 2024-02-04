@@ -1,0 +1,29 @@
+//This program prints a robot head
+//Yunus Emre Gezici 
+//150121066
+
+public class Pro1_150121066 {
+
+	public static void main(String[] args) {
+
+		// These are antennas
+		System.out.println("     o  o                                        ");
+		System.out.println("     | /                                         ");
+		System.out.println("  ___________                                      ");
+		System.out.println(" |           |            _______________          ");
+		// These are eyebrows
+		System.out.println(" |   -   -   |           |               |         ");
+		// These are eyes
+		System.out.println(" |   0   o   |    ---    | Hi!Teacher    |         ");
+		// This is nose
+		System.out.println("(      ¬      )      >   | My name is    |         ");
+		System.out.println(" |           |    ---    | HWBot2022     |         ");
+		// This is mouth
+		System.out.println(" |   <--->   |           |               | ");
+		System.out.println(" |           |            ---------------                        ");
+		System.out.println("  -----------                                      ");
+		// We have a robot that has eyebrows and nose :)
+
+	}
+
+}
